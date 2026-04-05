@@ -195,10 +195,10 @@ const MobilePage = () => {
                         </li>
                       ))}
                     </ul>
-                    {"promo" in plan && plan.promo && (
+                    {"promo" in plan && (plan as { promo?: string }).promo && (
                       <div className="flex items-start gap-2 bg-accent/10 rounded-lg p-3 mb-4">
                         <Gift className="w-4 h-4 text-accent flex-shrink-0 mt-0.5" />
-                        <span className="text-sm font-semibold text-foreground">{plan.promo}</span>
+                        <span className="text-sm font-semibold text-foreground">{(plan as { promo?: string }).promo}</span>
                       </div>
                     )}
                     <button onClick={openModal} className="w-full cta-gradient text-accent-foreground font-bold py-3 rounded-full hover:opacity-90 transition-opacity">
