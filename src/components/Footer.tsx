@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import optimumLogo from "@/assets/optimum-logo.png";
 
 const Footer = () => (
@@ -13,28 +14,27 @@ const Footer = () => (
         <div>
           <h4 className="text-navy-foreground font-semibold mb-3">Optimum Internet</h4>
           <ul className="space-y-2 text-sm text-navy-foreground/60">
-            <li><a href="#internet" className="hover:text-accent transition-colors">Internet Plans & Pricing</a></li>
-            <li><a href="#internet" className="hover:text-accent transition-colors">Fiber Internet Speeds</a></li>
-            <li><a href="#internet" className="hover:text-accent transition-colors">Internet & Mobile Bundles</a></li>
-            <li><a href="#internet" className="hover:text-accent transition-colors">5-Year Price Lock</a></li>
-            <li><a href="#internet" className="hover:text-accent transition-colors">Internet Availability Map</a></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">Internet Plans & Pricing</Link></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">Fiber Internet Speeds</Link></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">Internet & Mobile Bundles</Link></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">5-Year Price Lock</Link></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">Internet Availability</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-navy-foreground font-semibold mb-3">Optimum Services</h4>
           <ul className="space-y-2 text-sm text-navy-foreground/60">
-            <li><a href="#" className="hover:text-accent transition-colors">Optimum Mobile</a></li>
-            <li><a href="#" className="hover:text-accent transition-colors">Optimum TV</a></li>
-            <li><a href="#" className="hover:text-accent transition-colors">Business Internet</a></li>
-            <li><a href="#" className="hover:text-accent transition-colors">Moving Services</a></li>
-            <li><a href="#" className="hover:text-accent transition-colors">WiFi Equipment</a></li>
+            <li><Link to="/mobile" className="hover:text-accent transition-colors">Optimum Mobile</Link></li>
+            <li><Link to="/tv" className="hover:text-accent transition-colors">Optimum TV</Link></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">Moving Services</Link></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">WiFi Equipment</Link></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">Bundle & Save</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="text-navy-foreground font-semibold mb-3">Support</h4>
           <ul className="space-y-2 text-sm text-navy-foreground/60">
-            <li><a href="#" className="hover:text-accent transition-colors">Customer Service</a></li>
-            <li><a href="#faq" className="hover:text-accent transition-colors">FAQ</a></li>
+            <li><Link to="/" className="hover:text-accent transition-colors">FAQ</Link></li>
             <li><a href="#" className="hover:text-accent transition-colors">Terms & Conditions</a></li>
             <li><a href="#" className="hover:text-accent transition-colors">Privacy Policy</a></li>
             <li><a href="#" className="hover:text-accent transition-colors">Accessibility</a></li>
