@@ -1,32 +1,35 @@
 import { useState } from "react";
-import { Menu, X, Wifi, Smartphone, Tv, Briefcase, HeadphonesIcon } from "lucide-react";
+import { Menu, X, Wifi, Smartphone, Tv } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import optimumLogo from "@/assets/optimum-logo.png";
 
 const navItems = [
-  { label: "Internet", icon: Wifi },
-  { label: "Mobile", icon: Smartphone },
-  { label: "TV", icon: Tv },
-  { label: "Business", icon: Briefcase },
-  { label: "Customer Service", icon: HeadphonesIcon },
+  { label: "Internet", icon: Wifi, href: "/" },
+  { label: "Mobile", icon: Smartphone, href: "/mobile" },
+  { label: "TV", icon: Tv, href: "/tv" },
 ];
 
 const Header = ({ onOrderClick }: { onOrderClick: () => void }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   return (
     <header className="sticky top-0 z-50 bg-background shadow-sm">
       <nav className="container mx-auto flex items-center justify-between py-3 px-4" aria-label="Main navigation">
-        <a href="/" className="flex-shrink-0" aria-label="Optimum Authorized Reseller - Home">
+        <Link to="/" className="flex-shrink-0" aria-label="Optimum Authorized Reseller - Home">
           <img src={optimumLogo} alt="Optimum Authorized Reseller Logo" width={180} height={48} className="h-10 w-auto" />
-        </a>
+        </Link>
 
         <ul className="hidden lg:flex items-center gap-6">
           {navItems.map((item) => (
             <li key={item.label}>
-              <a href={`#${item.label.toLowerCase().replace(/\s+/g, "-")}`} className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-accent transition-colors">
+              <Link
+                to={item.href}
+                className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${location.pathname === item.href ? "text-accent" : "text-foreground hover:text-accent"}`}
+              >
                 <item.icon className="w-4 h-4" />
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -45,10 +48,14 @@ const Header = ({ onOrderClick }: { onOrderClick: () => void }) => {
           <ul className="flex flex-col gap-3 py-3">
             {navItems.map((item) => (
               <li key={item.label}>
-                <a href={`#${item.label.toLowerCase().replace(/\s+/g, "-")}`} className="flex items-center gap-2 text-sm font-medium text-foreground" onClick={() => setMobileOpen(false)}>
+                <Link
+                  to={item.href}
+                  className={`flex items-center gap-2 text-sm font-medium ${location.pathname === item.href ? "text-accent" : "text-foreground"}`}
+                  onClick={() => setMobileOpen(false)}
+                >
                   <item.icon className="w-4 h-4" />
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
