@@ -133,6 +133,96 @@ function isValidDOB(v: string) {
   return dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d;
 }
 
+const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DAY_NAMES = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+
+const InstallCalendar = ({
+  min, max, value, onChange, invalid,
+}: {
+  min: string; max: string; value: string;
+  onChange: (v: string) => void; invalid?: boolean;
+}) => {
+  const toLocal = (s: string) => new Date(s + "T00:00:00");
+  const minD = toLocal(min);
+  const maxD = toLocal(max);
+  const [viewYear, setViewYear] = useState(minD.getFullYear());
+  const [viewMonth, setViewMonth] = useState(minD.getMonth());
+
+  const fmt = (y: number, m: number, d: number) =>
+    `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const startDow = new Date(viewYear, viewMonth, 1).getDay();
+
+  const minMonthTime = new Date(minD.getFullYear(), minD.getMonth(), 1).getTime();
+  const maxMonthTime = new Date(maxD.getFullYear(), maxD.getMonth(), 1).getTime();
+  const viewMonthTime = new Date(viewYear, viewMonth, 1).getTime();
+  const canPrev = viewMonthTime > minMonthTime;
+  const canNext = viewMonthTime < maxMonthTime;
+
+  const prevMonth = () => {
+    if (!canPrev) return;
+    if (viewMonth === 0) { setViewYear(y => y - 1); setViewMonth(11); }
+    else setViewMonth(m => m - 1);
+  };
+  const nextMonth = () => {
+    if (!canNext) return;
+    if (viewMonth === 11) { setViewYear(y => y + 1); setViewMonth(0); }
+    else setViewMonth(m => m + 1);
+  };
+
+  const cells: (number | null)[] = [
+    ...Array(startDow).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  return (
+    <div className={`bg-white rounded-xl border-2 p-4 select-none ${invalid ? "border-destructive" : "border-gray-200"}`}>
+      <div className="flex items-center justify-between mb-3">
+        <button type="button" onClick={prevMonth} disabled={!canPrev}
+          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 disabled:opacity-25 text-gray-600 text-xl font-bold">
+          ‹
+        </button>
+        <span className="font-bold text-sm text-gray-800">{MONTH_NAMES[viewMonth]} {viewYear}</span>
+        <button type="button" onClick={nextMonth} disabled={!canNext}
+          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 disabled:opacity-25 text-gray-600 text-xl font-bold">
+          ›
+        </button>
+      </div>
+      <div className="grid grid-cols-7 mb-1">
+        {DAY_NAMES.map(d => (
+          <div key={d} className="text-center text-xs font-semibold text-gray-400 pb-1">{d}</div>
+        ))}
+      </div>
+      <div className="grid grid-cols-7 gap-y-1">
+        {cells.map((day, i) => {
+          if (!day) return <div key={i} />;
+          const dateStr = fmt(viewYear, viewMonth, day);
+          const avail = dateStr >= min && dateStr <= max;
+          const sel = dateStr === value;
+          return (
+            <button key={i} type="button" disabled={!avail} onClick={() => onChange(dateStr)}
+              className={`mx-auto w-9 h-9 flex items-center justify-center rounded-full text-sm font-medium transition-colors
+                ${sel
+                  ? "bg-green-500 text-white shadow-sm"
+                  : avail
+                  ? "bg-green-100 text-green-800 hover:bg-green-400 hover:text-white cursor-pointer"
+                  : "text-gray-300 cursor-not-allowed"}`}>
+              {day}
+            </button>
+          );
+        })}
+      </div>
+      {value && (
+        <p className="text-xs text-green-700 font-semibold text-center mt-3 pt-3 border-t border-gray-100">
+          ✓ {toLocal(value).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+        </p>
+      )}
+    </div>
+  );
+};
+
 const TOTAL_STEPS = 7;
 
 type OrderModalProps = {
@@ -661,10 +751,16 @@ const OrderModal = ({ isOpen, onClose, selectedPlan }: OrderModalProps) => {
               {step === 6 && (
                 <section aria-label="Installation preferences">
                   <h3 className="text-lg font-bold text-foreground mb-4">Step 6 — Installation Date & Time</h3>
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="space-y-4">
                     <div>
-                      <label htmlFor="installDate" className={labelCls}>Preferred Install Date</label>
-                      <input id="installDate" type="date" min={installDateBounds.min} max={installDateBounds.max} className={fld(showValidation && !form.preferredInstallDate)} value={form.preferredInstallDate} onChange={(e) => update("preferredInstallDate", e.target.value)} required />
+                      <label className={labelCls}>Preferred Install Date <span className="text-muted-foreground font-normal">(green dates available)</span></label>
+                      <InstallCalendar
+                        min={installDateBounds.min}
+                        max={installDateBounds.max}
+                        value={form.preferredInstallDate}
+                        onChange={(v) => update("preferredInstallDate", v)}
+                        invalid={showValidation && !form.preferredInstallDate}
+                      />
                       {showValidation && !form.preferredInstallDate && <p className="text-xs text-destructive mt-1">Please pick a date</p>}
                     </div>
                     <div>
