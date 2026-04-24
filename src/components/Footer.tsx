@@ -4,46 +4,44 @@ import optimumLogo from "@/assets/optimum-logo.png";
 const Footer = () => (
   <footer className="bg-navy py-12" aria-label="Site footer">
     <div className="container mx-auto px-4">
-      <div className="grid md:grid-cols-4 gap-8 mb-8">
+      <div className="grid md:grid-cols-3 gap-8 mb-8">
         <div>
           <img src={optimumLogo} alt="Optimum Authorized Reseller" width={140} height={38} className="h-8 w-auto brightness-0 invert mb-4" />
           <p className="text-navy-foreground/60 text-sm leading-relaxed">
-            Optimum is a leading internet service provider offering high-speed fiber internet, mobile, and TV services. As an authorized Optimum reseller, we help customers find the best Optimum internet deals and plans for their homes.
+            Authorized Optimum reseller offering high-speed fiber Internet, TV, and Mobile with transparent pricing and a 5-year price guarantee. Order online in minutes and a licensed Optimum agent schedules your installation.
           </p>
         </div>
+
         <div>
-          <h4 className="text-navy-foreground font-semibold mb-3">Optimum Internet</h4>
+          <h4 className="text-navy-foreground font-semibold mb-3">Shop Optimum</h4>
           <ul className="space-y-2 text-sm text-navy-foreground/60">
-            <li><Link to="/" className="hover:text-accent transition-colors">Internet Plans & Pricing</Link></li>
-            <li><Link to="/" className="hover:text-accent transition-colors">Fiber Internet Speeds</Link></li>
-            <li><Link to="/" className="hover:text-accent transition-colors">Internet & Mobile Bundles</Link></li>
-            <li><Link to="/" className="hover:text-accent transition-colors">5-Year Price Lock</Link></li>
-            <li><Link to="/" className="hover:text-accent transition-colors">Internet Availability</Link></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-navy-foreground font-semibold mb-3">Optimum Services</h4>
-          <ul className="space-y-2 text-sm text-navy-foreground/60">
+            <li><Link to="/" className="hover:text-accent transition-colors">Fiber Internet Plans</Link></li>
+            <li><Link to="/tv" className="hover:text-accent transition-colors">Optimum TV Packages</Link></li>
             <li><Link to="/mobile" className="hover:text-accent transition-colors">Optimum Mobile</Link></li>
-            <li><Link to="/tv" className="hover:text-accent transition-colors">Optimum TV</Link></li>
-            <li><Link to="/" className="hover:text-accent transition-colors">Moving Services</Link></li>
-            <li><Link to="/" className="hover:text-accent transition-colors">WiFi Equipment</Link></li>
-            <li><Link to="/" className="hover:text-accent transition-colors">Bundle & Save</Link></li>
+            <li><Link to="/bundles" className="hover:text-accent transition-colors">Bundles &amp; Savings</Link></li>
+            <li><Link to="/deals" className="hover:text-accent transition-colors">Deals &amp; Promotions</Link></li>
+            <li><a href="/#internet" className="hover:text-accent transition-colors">Compare Plans &amp; Pricing</a></li>
+            <li><a href="/#faq" className="hover:text-accent transition-colors">Frequently Asked Questions</a></li>
           </ul>
         </div>
+
         <div>
-          <h4 className="text-navy-foreground font-semibold mb-3">Support</h4>
+          <h4 className="text-navy-foreground font-semibold mb-3">About &amp; Legal</h4>
           <ul className="space-y-2 text-sm text-navy-foreground/60">
-            <li><Link to="/" className="hover:text-accent transition-colors">FAQ</Link></li>
-            <li><a href="#" className="hover:text-accent transition-colors">Terms & Conditions</a></li>
-            <li><a href="#" className="hover:text-accent transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-accent transition-colors">Accessibility</a></li>
+            <li className="text-navy-foreground/80 font-medium">Authorized Optimum Reseller</li>
+            <li className="text-navy-foreground/60">Serving 21 Optimum states</li>
+            <li><Link to="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-accent transition-colors">Terms of Service</Link></li>
+            <li className="pt-2 text-navy-foreground/60 text-xs">
+              Questions? Start your order online and an agent will reach out within one business hour.
+            </li>
           </ul>
         </div>
       </div>
+
       <div className="border-t border-navy-foreground/10 pt-6">
         <p className="text-xs text-navy-foreground/40 leading-relaxed">
-          © {new Date().getFullYear()} Optimum Authorized Reseller. All rights reserved. Optimum and the Optimum logo are registered trademarks of Altice USA. This website is operated by an authorized Optimum reseller. Internet speeds, pricing, and availability vary by location. Advertised speeds are maximum wired speeds. Actual Optimum internet speeds may vary based on device, connection type, network conditions, and other factors. 5-year price lock applies to eligible plans with Auto Pay & Paperless Bill enrollment. Taxes, fees, and surcharges extra. Not all services available in all areas.
+          © {new Date().getFullYear()} Authorized Optimum Reseller. &quot;Optimum&quot; and the Optimum logo are registered trademarks of Altice USA; used with permission. This site is operated by an authorized reseller, not Altice USA. Internet speeds, pricing, and service availability vary by location. Advertised speeds are maximum wired speeds; actual speeds vary based on device, connection type, and network conditions. 5-year price guarantee applies to eligible plans with Auto Pay &amp; Paperless Bill enrollment. Taxes, fees, and surcharges extra. Not all services available in all areas. First month of service is required to be pre-authorized before a technician is dispatched.
         </p>
       </div>
     </div>

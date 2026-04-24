@@ -34,13 +34,29 @@ const faqs = [
     q: "Can I transfer my Optimum Internet service when I move?",
     a: "Yes! If you're an existing Optimum customer, you can transfer your Optimum Internet service to your new address at no cost. Your current plan, pricing, and 5-year price lock will carry over to your new location as long as Optimum service is available at your new address. Click 'Order Online' to initiate your Optimum Internet service transfer.",
   },
+  {
+    q: "Does Optimum require a contract or early termination fee?",
+    a: "No — Optimum Internet is contract-free. There are no annual contracts and no early termination fees, so you can cancel or change your Optimum Internet plan at any time. Your 5-year price lock is a promise from Optimum, not a commitment from you.",
+  },
+  {
+    q: "Why does Optimum require the first month paid before installation?",
+    a: "Optimum requires a first-month pre-authorization before dispatching a technician to reserve your install window, hold your equipment, and prevent last-minute cancellations that tie up field resources. The charge is held securely on file and finalized only after your installation is complete and you've confirmed service is working. This policy allows Optimum to offer same-week installs, free professional installation on most plans, and the industry-leading 5-year price lock.",
+  },
+  {
+    q: "Is there a money-back guarantee with Optimum Internet?",
+    a: "Yes. Every Optimum Internet plan is backed by a 30-day money-back guarantee. If you're not satisfied with your Optimum fiber internet speeds or service within the first 30 days, you can cancel and receive a full refund of your service charges — no restocking fees, no hoops to jump through.",
+  },
+  {
+    q: "How long does Optimum Internet installation take?",
+    a: "Optimum professional installation typically takes 1 to 2 hours. Most customers can schedule their installation within 3 to 7 business days of placing their order. During installation, an Optimum technician will run the fiber line to your home (if needed), install your gateway modem, set up your WiFi network, and verify your internet speeds before leaving.",
+  },
 ];
 
-const FAQSection = ({ onOrderClick }: { onOrderClick: () => void }) => {
+const FAQSection = ({ onOrderClick }: { onOrderClick: (plan?: string) => void }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-16 md:py-24 bg-secondary" aria-labelledby="faq-heading">
+    <section id="faq" className="py-16 md:py-24 bg-secondary" aria-labelledby="faq-heading">
       <div className="container mx-auto px-4 max-w-3xl">
         <h2 id="faq-heading" className="text-3xl md:text-4xl font-extrabold text-center text-foreground mb-4">
           Frequently Asked Questions About Optimum Internet
@@ -63,7 +79,7 @@ const FAQSection = ({ onOrderClick }: { onOrderClick: () => void }) => {
               {openIndex === i && (
                 <div className="px-5 pb-5" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
                   <p className="text-sm text-muted-foreground leading-relaxed" itemProp="text">{faq.a}</p>
-                  <button onClick={onOrderClick} className="mt-3 text-accent font-semibold text-sm hover:underline">
+                  <button onClick={() => onOrderClick()} className="mt-3 text-accent font-semibold text-sm hover:underline">
                     Order Optimum Internet →
                   </button>
                 </div>

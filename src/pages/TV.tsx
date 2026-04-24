@@ -3,48 +3,30 @@ import { Check, Tv, Mic, MonitorPlay, Smartphone, HardDrive, ChevronDown } from 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import OrderModal from "@/components/OrderModal";
+import SEO from "@/components/SEO";
 import tvHero from "@/assets/tv-hero.jpg";
+import { TV_PACKAGES, TV_INTERNET_DISCOUNT } from "@/lib/catalog";
 
-const tvPackages = [
+const tvJsonLd = [
   {
-    name: "Entertainment TV",
-    channels: "80+",
-    description: "Top-rated entertainment TV at a great value with 80+ channels including local news, popular cable networks, and family-friendly programming.",
-    features: [
-      "80+ live TV channels",
-      "Local news & weather channels",
-      "Popular entertainment networks",
-      "Family & kids programming",
-      "Optimum TV app access",
-    ],
-    popular: false,
-  },
-  {
-    name: "Extra TV",
-    channels: "125+",
-    description: "News, family, entertainment, and sports channels — 125+ channels for households that want more variety and premium content.",
-    features: [
-      "125+ live TV channels",
-      "All Entertainment TV channels included",
-      "Additional sports & news networks",
-      "Lifestyle & reality channels",
-      "Cloud DVR included",
-    ],
-    popular: true,
-  },
-  {
-    name: "Everything TV",
-    channels: "200+",
-    description: "The ultimate Optimum TV experience with 200+ channels — sports, entertainment, premium networks, and everything else.",
-    features: [
-      "200+ live TV channels",
-      "All Extra TV channels included",
-      "Premium sports packages",
-      "Specialty & international channels",
-      "Cloud DVR with expanded storage",
-    ],
-    popular: false,
-  },
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Optimum TV Service",
+    "description": "Optimum TV packages with 75 to 200+ channels, Cloud DVR, 4K Ultra HD content, voice remote, and built-in streaming apps. From $30/mo with Optimum Internet.",
+    "brand": { "@type": "Brand", "name": "Optimum TV" },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "USD",
+      "lowPrice": "30",
+      "highPrice": "150",
+      "offerCount": "3"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.4",
+      "reviewCount": "5210"
+    }
+  }
 ];
 
 const tvFeatures = [
@@ -86,7 +68,7 @@ const tvFaqs = [
   },
   {
     q: "What are the Optimum TV packages and how much do they cost?",
-    a: "Optimum offers three main TV packages: Entertainment TV (80+ channels), Extra TV (125+ channels), and Everything TV (200+ channels). TV plans start as low as $25/mo when bundled with an eligible Optimum Internet plan. Pricing varies by location and current promotions.",
+    a: "Optimum offers three TV packages: Entertainment TV (75+ channels, $30/mo), Extra TV (120+ channels, $95/mo), and Everything TV (200+ channels, $150/mo). All require an eligible Optimum Internet plan — and when you add TV, you save $5/mo on your Internet automatically through the Optimum bundle discount.",
   },
   {
     q: "Do I need Optimum Internet to get Optimum TV?",
@@ -100,11 +82,22 @@ const tvFaqs = [
 
 const TVPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | undefined>(undefined);
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
-  const openModal = () => setModalOpen(true);
+  const openModal = (plan?: string) => {
+    setSelectedPlan(plan);
+    setModalOpen(true);
+  };
 
   return (
     <>
+      <SEO
+        title="Optimum TV from $30/mo | 75-200+ Channels & DVR"
+        description="Order Optimum TV online. Packages with 75 to 200+ live channels, Cloud DVR, 4K Ultra HD, voice remote, and built-in streaming apps from $30/mo."
+        canonical="https://www.optimuminternetservice.com/tv"
+        keywords="Optimum TV, Optimum cable, cable TV packages, Cloud DVR, 4K TV, Optimum TV app, voice remote, streaming apps cable, TV and internet bundle"
+        jsonLd={tvJsonLd}
+      />
       <Header onOrderClick={openModal} />
       <main>
         {/* Hero */}
@@ -112,28 +105,28 @@ const TVPage = () => {
           <div className="absolute inset-0 opacity-20">
             <img src={tvHero} alt="Family watching Optimum TV together in living room" width={1920} height={1080} className="w-full h-full object-cover" />
           </div>
-          <div className="relative container mx-auto px-4 py-16 md:py-24">
-            <div className="max-w-2xl">
-              <h1 id="tv-hero-heading" className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground leading-tight mb-4">
+          <div className="relative container mx-auto px-4 py-10 md:py-14 lg:py-16">
+            <div className="max-w-3xl">
+              <h1 id="tv-hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-primary-foreground leading-tight mb-3">
                 Optimum TV — More Entertainment at a Lower Price
               </h1>
-              <p className="text-primary-foreground/80 text-lg md:text-xl mb-6">
-                Enjoy 80 to 200+ live TV channels, built-in streaming apps, Cloud DVR, 4K Ultra HD content, and the Optimum TV app — all starting as low as $25/mo with an eligible Optimum Internet plan.
+              <p className="text-primary-foreground/80 text-base md:text-lg mb-5 max-w-2xl">
+                75 to 200+ live channels, Cloud DVR, 4K Ultra HD, and built-in streaming apps — from $30/mo with Optimum Internet, plus save ${TV_INTERNET_DISCOUNT}/mo on your Internet for bundling.
               </p>
-              <div className="bg-primary-foreground/10 backdrop-blur-md rounded-2xl p-6 inline-block mb-6 border border-primary-foreground/20">
-                <p className="text-primary-foreground/70 text-sm font-semibold uppercase tracking-wider mb-2">Optimum TV Plans From</p>
-                <div className="flex items-end gap-1">
-                  <span className="text-primary-foreground text-2xl font-bold">$</span>
-                  <span className="text-primary-foreground text-7xl font-extrabold leading-none">25</span>
-                  <span className="text-primary-foreground text-xl font-bold mb-2">/mo*</span>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="bg-primary-foreground/10 backdrop-blur-md rounded-xl px-5 py-3 border border-primary-foreground/20">
+                  <p className="text-primary-foreground/70 text-[11px] font-semibold uppercase tracking-wider">Entertainment TV</p>
+                  <div className="flex items-end gap-1">
+                    <span className="text-primary-foreground text-lg font-bold">$</span>
+                    <span className="text-primary-foreground text-5xl md:text-6xl font-extrabold leading-none">30</span>
+                    <span className="text-primary-foreground text-lg font-bold mb-1">/mo*</span>
+                  </div>
                 </div>
-                <p className="text-primary-foreground/50 text-xs mt-1">*For 12 months w/ Auto Pay & Paperless Bill. Plus taxes & fees. Requires eligible Internet plan.</p>
-              </div>
-              <div>
-                <button onClick={openModal} className="cta-gradient text-accent-foreground font-bold px-8 py-4 rounded-full text-lg hover:opacity-90 transition-opacity shadow-lg">
-                  Order Optimum TV Online
+                <button onClick={() => openModal()} className="cta-gradient text-accent-foreground font-bold px-7 py-3.5 rounded-full text-base hover:opacity-90 transition-opacity shadow-lg">
+                  Order Optimum TV
                 </button>
               </div>
+              <p className="text-primary-foreground/60 text-xs mt-4">*Requires an eligible Optimum Internet plan. Plus taxes &amp; fees. Bundle and save ${TV_INTERNET_DISCOUNT}/mo on Internet automatically.</p>
             </div>
           </div>
         </section>
@@ -149,31 +142,32 @@ const TVPage = () => {
             </p>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {tvPackages.map((pkg) => (
-                <article key={pkg.name} className={`relative bg-card rounded-2xl shadow-lg border-2 overflow-hidden transition-transform hover:-translate-y-1 ${pkg.popular ? "border-accent" : "border-border"}`}>
-                  {pkg.popular && (
-                    <div className="cta-gradient text-accent-foreground text-center text-xs font-bold py-1.5 uppercase tracking-wider">
-                      Most Popular
+              {TV_PACKAGES.map((pkg) => {
+                const recommended = pkg.id === "extra";
+                return (
+                  <article key={pkg.id} className={`relative bg-card rounded-2xl shadow-lg border-2 overflow-hidden transition-transform hover:-translate-y-1 ${recommended ? "border-accent" : "border-border"}`}>
+                    {recommended && (
+                      <div className="cta-gradient text-accent-foreground text-center text-xs font-bold py-1.5 uppercase tracking-wider">
+                        Most Popular
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-foreground mb-1">{pkg.name}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{pkg.channels} channels</p>
+                      <div className="flex items-end gap-1 mb-3">
+                        <span className="text-foreground text-lg font-bold">$</span>
+                        <span className="text-foreground text-5xl font-extrabold leading-none">{pkg.price}</span>
+                        <span className="text-muted-foreground text-sm mb-1">/mo</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-4">{pkg.blurb}</p>
+                      <div className="text-xs text-teal font-semibold mb-4">+ save ${TV_INTERNET_DISCOUNT}/mo on Optimum Internet when you bundle</div>
+                      <button onClick={() => openModal()} className="w-full cta-gradient text-accent-foreground font-bold py-3 rounded-full hover:opacity-90 transition-opacity">
+                        Order {pkg.name}
+                      </button>
                     </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-foreground mb-1">{pkg.name}</h3>
-                    <p className="text-3xl font-extrabold text-accent mb-2">{pkg.channels} Channels</p>
-                    <p className="text-sm text-muted-foreground mb-4">{pkg.description}</p>
-                    <ul className="space-y-2 mb-6">
-                      {pkg.features.map((f) => (
-                        <li key={f} className="flex items-start gap-2 text-sm text-foreground">
-                          <Check className="w-4 h-4 text-teal flex-shrink-0 mt-0.5" />
-                          {f}
-                        </li>
-                      ))}
-                    </ul>
-                    <button onClick={openModal} className="w-full cta-gradient text-accent-foreground font-bold py-3 rounded-full hover:opacity-90 transition-opacity">
-                      Order Online
-                    </button>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                );
+              })}
             </div>
             <p className="text-center text-xs text-muted-foreground mt-6 max-w-3xl mx-auto">
               *Not available in all areas. TV service requires eligible Optimum Internet plan. Channel lineups vary by location. Plus taxes & fees.
@@ -239,7 +233,7 @@ const TVPage = () => {
                   {faqOpen === i && (
                     <div className="px-5 pb-5" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
                       <p className="text-sm text-muted-foreground leading-relaxed" itemProp="text">{faq.a}</p>
-                      <button onClick={openModal} className="mt-3 text-accent font-semibold text-sm hover:underline">Order Optimum TV →</button>
+                      <button onClick={() => openModal()} className="mt-3 text-accent font-semibold text-sm hover:underline">Order Optimum TV →</button>
                     </div>
                   )}
                 </div>
@@ -252,15 +246,15 @@ const TVPage = () => {
         <section className="hero-gradient py-12">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-2xl md:text-3xl font-extrabold text-primary-foreground mb-3">Ready to Upgrade Your Home Entertainment?</h2>
-            <p className="text-primary-foreground/70 mb-6 max-w-xl mx-auto">Get Optimum TV with 80 to 200+ channels, Cloud DVR, and built-in streaming apps starting at $25/mo.</p>
-            <button onClick={openModal} className="cta-gradient text-accent-foreground font-bold px-8 py-4 rounded-full text-lg hover:opacity-90 transition-opacity shadow-lg">
+            <p className="text-primary-foreground/70 mb-6 max-w-xl mx-auto">Get Optimum TV with 75 to 200+ channels, Cloud DVR, and built-in streaming apps from $30/mo — plus ${TV_INTERNET_DISCOUNT}/mo off your Internet for bundling.</p>
+            <button onClick={() => openModal()} className="cta-gradient text-accent-foreground font-bold px-8 py-4 rounded-full text-lg hover:opacity-90 transition-opacity shadow-lg">
               Order Online Now
             </button>
           </div>
         </section>
       </main>
       <Footer />
-      <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <OrderModal isOpen={modalOpen} onClose={() => setModalOpen(false)} selectedPlan={selectedPlan} />
     </>
   );
 };

@@ -34,7 +34,7 @@ const features = [
   },
 ];
 
-const FeaturesSection = ({ onOrderClick }: { onOrderClick: () => void }) => (
+const FeaturesSection = ({ onOrderClick }: { onOrderClick: (plan?: string) => void }) => (
   <section className="py-16 md:py-24 bg-background" aria-labelledby="features-heading">
     <div className="container mx-auto px-4">
       <h2 id="features-heading" className="text-3xl md:text-4xl font-extrabold text-center text-foreground mb-4">
@@ -66,7 +66,7 @@ const FeaturesSection = ({ onOrderClick }: { onOrderClick: () => void }) => (
             <p className="text-muted-foreground mb-6 leading-relaxed">
               Optimum's next-generation fiber optic internet network uses cutting-edge technology to deliver symmetrical upload and download speeds up to 1 Gbps. Combined with Optimum's Smart WiFi 6 gateway, you get wall-to-wall wireless internet coverage with intelligent device management that automatically optimizes your connection for streaming, gaming, and video calls.
             </p>
-            <button onClick={onOrderClick} className="cta-gradient text-accent-foreground font-bold px-8 py-3 rounded-full hover:opacity-90 transition-opacity">
+            <button onClick={() => onOrderClick()} className="cta-gradient text-accent-foreground font-bold px-8 py-3 rounded-full hover:opacity-90 transition-opacity">
               Order Optimum Internet
             </button>
           </div>

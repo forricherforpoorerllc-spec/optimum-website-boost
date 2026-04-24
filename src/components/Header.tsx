@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Menu, X, Wifi, Smartphone, Tv } from "lucide-react";
+import { Menu, X, Wifi, Smartphone, Tv, Tag, Package } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import optimumLogo from "@/assets/optimum-logo.png";
 
 const navItems = [
   { label: "Internet", icon: Wifi, href: "/" },
-  { label: "Mobile", icon: Smartphone, href: "/mobile" },
   { label: "TV", icon: Tv, href: "/tv" },
+  { label: "Mobile", icon: Smartphone, href: "/mobile" },
+  { label: "Bundles", icon: Package, href: "/bundles" },
+  { label: "Deals", icon: Tag, href: "/deals" },
 ];
 
-const Header = ({ onOrderClick }: { onOrderClick: () => void }) => {
+const Header = ({ onOrderClick }: { onOrderClick: (plan?: string) => void }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
@@ -34,7 +36,7 @@ const Header = ({ onOrderClick }: { onOrderClick: () => void }) => {
           ))}
         </ul>
 
-        <button onClick={onOrderClick} className="hidden lg:block cta-gradient text-accent-foreground font-semibold px-6 py-2.5 rounded-full text-sm hover:opacity-90 transition-opacity">
+        <button onClick={() => onOrderClick()} className="hidden lg:block cta-gradient text-accent-foreground font-semibold px-6 py-2.5 rounded-full text-sm hover:opacity-90 transition-opacity">
           Order Online
         </button>
 
