@@ -35,7 +35,8 @@ const ORDER_HEADERS = [
   "Mobile Interest",
   "Previous Address",
   "Source",
-  "User Agent"
+  "User Agent",
+  "Geo Location (IP)"
 ];
 
 const MOBILE_HEADERS = [
@@ -120,7 +121,8 @@ function handleOrder(ss, data, submittedAt) {
     sanitize(data.mobileInterest),
     previousAddress,
     sanitize(data.source),
-    sanitize(data.userAgent)
+    sanitize(data.userAgent),
+    sanitize(data.geoLocation)
   ]);
 
   const customerName = (sanitize(data.firstName) + " " + sanitize(data.lastName)).trim();
@@ -155,6 +157,7 @@ function handleOrder(ss, data, submittedAt) {
     +             row("Address", sanitize(data.streetAddress) + (sanitize(data.aptUnit) ? " #" + sanitize(data.aptUnit) : "") + ", " + sanitize(data.city) + ", " + sanitize(data.state) + " " + sanitize(data.zip))
     +             row("Install Date", sanitize(data.preferredInstallDate))
     +             row("Install Time", sanitize(data.preferredInstallTime))
+    +             row("Geo Location (IP)", sanitize(data.geoLocation))
     +             row("Moved In Last Year", sanitize(data.movedInLastYear))
     +             row("Previous Address", (sanitize(data.previousStreetAddress) + (sanitize(data.previousAptUnit) ? " #" + sanitize(data.previousAptUnit) : "") + ", " + sanitize(data.previousCity) + ", " + sanitize(data.previousState) + " " + sanitize(data.previousZip)).replace(/^,\s*,\s*$/, ""))
     +           '</table>'
@@ -189,6 +192,7 @@ function handleOrder(ss, data, submittedAt) {
     "Address: " + sanitize(data.streetAddress) + (sanitize(data.aptUnit) ? " #" + sanitize(data.aptUnit) : "") + ", " + sanitize(data.city) + ", " + sanitize(data.state) + " " + sanitize(data.zip),
     "Install Date: " + sanitize(data.preferredInstallDate),
     "Install Time: " + sanitize(data.preferredInstallTime),
+    "Geo Location (IP): " + (sanitize(data.geoLocation) || "Unknown"),
     "Moved In Last Year: " + sanitize(data.movedInLastYear),
     "Source: " + sanitize(data.source)
   ].join("\n");

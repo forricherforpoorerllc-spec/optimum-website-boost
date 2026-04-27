@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { X, Check, ShieldCheck, Lock, CreditCard, ArrowLeft, ArrowRight, Loader2, Smartphone, Tv as TvIcon, Wifi } from "lucide-react";
 import {
   INTERNET_PLANS,
@@ -16,7 +16,7 @@ import {
  * Apps Script Web App URL — hardcoded.
  * Replace the value below with your deployed Apps Script /exec URL.
  */
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7DzA6leTuVS873-8r5yuk-dfi4t6fWd2TtOBdjqsrHGupLpCypHfmqMtcM1u0xBp6/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyaiWbpfRyQZ9kiUFz_b5gZV9E9t9BHttIEJ130wUo5gwyK-Zr9birGstWjDReOcfxL/exec";
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
@@ -225,6 +225,46 @@ const InstallCalendar = ({
 
 const TOTAL_STEPS = 7;
 
+async function resolveIpGeoLocation(): Promise<string> {
+  const attempts: Array<() => Promise<string>> = [
+    async () => {
+      const ac = new AbortController();
+      const t = setTimeout(() => ac.abort(), 3500);
+      try {
+        const r = await fetch("https://ipwho.is/?fields=success,city,region", { signal: ac.signal });
+        const j = await r.json();
+        if (!j.success) throw new Error("ipwho.is failed");
+        return [j.city, j.region].filter(Boolean).join(", ");
+      } finally { clearTimeout(t); }
+    },
+    async () => {
+      const ac = new AbortController();
+      const t = setTimeout(() => ac.abort(), 3500);
+      try {
+        const r = await fetch("https://ipapi.co/json/", { signal: ac.signal });
+        const j = await r.json();
+        return [j.city, j.region].filter(Boolean).join(", ");
+      } finally { clearTimeout(t); }
+    },
+    async () => {
+      const ac = new AbortController();
+      const t = setTimeout(() => ac.abort(), 3500);
+      try {
+        const r = await fetch("https://get.geojs.io/v1/ip/geo.json", { signal: ac.signal });
+        const j = await r.json();
+        return [j.city, j.region].filter(Boolean).join(", ");
+      } finally { clearTimeout(t); }
+    },
+  ];
+  for (const attempt of attempts) {
+    try {
+      const result = await attempt();
+      if (result) return result;
+    } catch { /* try next */ }
+  }
+  return "";
+}
+
 type OrderModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -243,6 +283,8 @@ const OrderModal = ({ isOpen, onClose, selectedPlan }: OrderModalProps) => {
   const [mobileSaved, setMobileSaved] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
 
+  const ipGeoPromiseRef = useRef<Promise<string> | null>(null);
+
   useEffect(() => {
     if (isOpen) {
       const sel = typeof selectedPlan === "string" ? selectedPlan : "";
@@ -259,6 +301,7 @@ const OrderModal = ({ isOpen, onClose, selectedPlan }: OrderModalProps) => {
       setErrorMsg("");
       setMobileSaved(false);
       setShowValidation(false);
+      ipGeoPromiseRef.current = resolveIpGeoLocation();
     }
   }, [isOpen, selectedPlan]);
 
@@ -391,6 +434,7 @@ const OrderModal = ({ isOpen, onClose, selectedPlan }: OrderModalProps) => {
       source: typeof window !== "undefined" ? window.location.href : "",
       userAgent: typeof navigator !== "undefined" ? navigator.userAgent : "",
       submittedAt: new Date().toISOString(),
+      geoLocation: "",
       ...overrides,
     };
   };
@@ -420,7 +464,12 @@ const OrderModal = ({ isOpen, onClose, selectedPlan }: OrderModalProps) => {
     setSubmitting(true);
     setErrorMsg("");
     try {
-      await postPayload(buildPayload());
+      const pending = ipGeoPromiseRef.current ?? Promise.resolve("");
+      const geoLocation = await Promise.race<string>([
+        pending,
+        new Promise<string>((r) => setTimeout(() => r(""), 3000)),
+      ]);
+      await postPayload(buildPayload({ geoLocation }));
       setSubmitted(true);
       setShowAgreement(false);
     } catch (e) {
